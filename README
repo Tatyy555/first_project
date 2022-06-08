@@ -5,11 +5,11 @@
     https://zenn.dev/shochan/books/4963c7cc8f3bb2/viewer/a58717
 
     基本的には、
-        まずCloneして
-        MainをPullして
-        Isuue毎にBranchを作成し
-        Pull Requestをして
-        Review後にMerge
+        ・　まずCloneして
+        ・　MainをPullして(最初はCloneと同意義)
+        ・　Isuue毎にBranchを作成し
+        ・　Pull Requestをして
+        ・　Review後にMerge
     と考えています。
 
 
