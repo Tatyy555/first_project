@@ -1,2 +1,16 @@
 1.  まずはサンプルでREADMEを作成しました。
     これがGitでうまく反映されているか確認したいと思います。
+
+2.  以下URLを参考に進めることができればと考えています（進め方相談させてください）。
+    https://zenn.dev/shochan/books/4963c7cc8f3bb2/viewer/a58717
+
+    基本的には、
+        まずCloneして
+        MainをPullして
+        Isuue毎にBranchを作成し
+        Pull Requestをして
+        Review後にMerge
+    と考えています。
+
+
+
