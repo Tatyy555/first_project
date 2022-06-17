@@ -87,6 +87,16 @@ class _NewsListPageState extends State<NewsListPage> {
                               Text('# Sample2')
                             ]
                           ),
+                        ),
+                        Container(
+                          padding: const EdgeInsetsDirectional.only(top:10),
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              // 一旦、更新日はベタ打ち。
+                              children:const [
+                              Text('2022.06.15 12:30'),
+                            ]
+                          ),
                         )
                       ]
                     )
@@ -124,6 +134,16 @@ class _NewsListPageState extends State<NewsListPage> {
                               Text('# Sample2')
                             ]
                           ),
+                        ),
+                        Container(
+                          padding: const EdgeInsetsDirectional.only(top:10),
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              // 一旦、更新日はベタ打ち。
+                              children:const [
+                              Text('2022.06.16 12:30'),
+                            ]
+                          ),
                         )
                       ]
                     )
@@ -159,6 +179,16 @@ class _NewsListPageState extends State<NewsListPage> {
                               Text('# Sample1'),
                               Text('  '),
                               Text('# Sample2')
+                            ]
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsetsDirectional.only(top:10),
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              // 一旦、更新日はベタ打ち。
+                              children:const [
+                              Text('2022.06.15 12:30'),
                             ]
                           ),
                         )
