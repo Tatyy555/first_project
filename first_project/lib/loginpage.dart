@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:first_project/loginpage.dart';
+import 'package:first_project/newslistpage.dart';
+
 
 // ログイン画面用Widget
 class LoginPage extends StatefulWidget {
@@ -98,6 +99,14 @@ class _LoginPageState extends State<LoginPage> {
                     child: OutlinedButton(
                       child: const Text('ログイン'),
                       onPressed: () async {
+
+                        // 一旦、ログイン画面を押すとニュースリスト画面に遷移するようにしました。
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context)=> const NewsListPage())
+                        );
+
+
                         // // firbaseを導入してから着手する。
                         // try {
                         //   // メール/パスワードでログイン
