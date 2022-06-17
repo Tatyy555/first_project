@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children:<Widget>[
                   SizedBox(
-                    width: 130,
+                    width: 120,
                     // ログイン登録ボタン
                     child: OutlinedButton(
                       child: const Text('ログイン'),

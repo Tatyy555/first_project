@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:first_project/newsaddpage.dart';
 
 // ニュースリスト画面のWidget。
 class NewsListPage extends StatefulWidget{
@@ -209,7 +210,13 @@ class _NewsListPageState extends State<NewsListPage> {
       // 下の＋マークのWidget。
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {/* ボタンがタップされた時の処理 */},
+        onPressed: () async {
+          // プラスボタンを押すとニュース追加画面へ遷移。
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context)=> const NewsAddPage())
+            );
+          /* ボタンがタップされた時の処理 */},
         child: const Icon(Icons.add),
       ),
 
@@ -231,7 +238,9 @@ class _NewsListPageState extends State<NewsListPage> {
                       Icons.menu,
                       color: Colors.white,
                     ),
-                    onPressed: () { /* ボタンがタップされた時の処理 */ },
+                    onPressed: () {
+                      // 前の画面に戻るだけです（何もデータは渡さない。）
+                      Navigator.of(context).pop();},
                   ),
                   IconButton(
                     icon: const Icon(
