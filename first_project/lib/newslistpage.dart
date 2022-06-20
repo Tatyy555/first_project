@@ -1,3 +1,4 @@
+import 'package:first_project/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:first_project/newsaddpage.dart';
@@ -13,6 +14,12 @@ class NewsListPage extends StatefulWidget{
 
 
 class _NewsListPageState extends State<NewsListPage> {
+
+  // Drawerをタップで表示できるようにGlibalKeyを設定。
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+
   // any_link_previewのExampleを参考。一旦、ベタ打ちで日経新聞の記事を参照しています。
   final String _url1 = "https://www.nikkei.com/article/DGXZQOUB1721D0X10C22A6000000/";
   final String _url2 = "https://www.nikkei.com/article/DGXZQOUB170US0X10C22A6000000/";
@@ -239,8 +246,13 @@ class _NewsListPageState extends State<NewsListPage> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      // 前の画面に戻るだけです（何もデータは渡さない。）
-                      Navigator.of(context).pop();},
+                      // タップでDrawerを開くようにする。
+                      _scaffoldKey.currentState!.openDrawer();
+
+                      
+                      // // 前の画面に戻るだけです（何もデータは渡さない。）
+                      // Navigator.of(context).pop();
+                      },
                   ),
                   IconButton(
                     icon: const Icon(
@@ -264,6 +276,33 @@ class _NewsListPageState extends State<NewsListPage> {
           ),
         ),
       ),
+
+
+      // Drawerの内容を作成。中身は要確認。
+      key: _scaffoldKey,
+        drawer: Drawer(
+          child: Column(children: [
+            const UserAccountsDrawerHeader(
+              accountName: Text("User Name"),
+              accountEmail: Text("User Email"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage("https://pbs.twimg.com/profile_images/885510796691689473/rR9aWvBQ_400x400.jpg"),
+              ),
+            ),
+           ListTile(
+             title: const Text('ログアウト'),
+             onTap: () {
+              // タップ時にログイン画面に戻るように設定。ログアウトの仕方がこれでいいかは要確認。
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context)=> const LoginPage())
+                ); 
+             },
+           ),
+          ]),
+        )
+
     );
   }
 }
