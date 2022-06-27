@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+
+// Firestoreと連携させるため以下追加。
+
+
 // ニュース追加画面用のWidget。
 class NewsAddPage extends StatefulWidget{
   const NewsAddPage({Key? key}) : super(key: key);

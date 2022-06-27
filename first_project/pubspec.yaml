@@ -37,6 +37,9 @@ dependencies:
   flutter_native_splash: ^2.2.3+1
   flutter_launcher_icons: ^0.9.3
   any_link_preview: ^2.0.8
+  firebase_core: ^1.18.0
+  firebase_auth: ^3.3.20
+  cloud_firestore: ^3.1.18
 
 # flutter_launcher_iconsの設定。
 flutter_icons:

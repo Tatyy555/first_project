@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:first_project/newsaddpage.dart';
 
+// Firebase authと連携させるため以下追加。
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 // ニュースリスト画面のWidget。
 class NewsListPage extends StatefulWidget{
-  const NewsListPage({Key? key}) : super(key: key);
+  // 引数からユーザー情報を受け取れるようにする
+  const NewsListPage(this.user);
+  // ユーザー情報
+  final User user;
+
   @override 
   // aviud usiung private types in public APIsは何を直せばいいんだ？
   _NewsListPageState createState() => _NewsListPageState();
@@ -292,13 +300,17 @@ class _NewsListPageState extends State<NewsListPage> {
             ),
            ListTile(
              title: const Text('ログアウト'),
-             onTap: () {
-              // タップ時にログイン画面に戻るように設定。ログアウトの仕方がこれでいいかは要確認。
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context)=> const LoginPage())
-                ); 
-             },
+             onTap: () async {
+              // ログアウト処理
+              // 内部で保持しているログイン情報等が初期化される
+              await FirebaseAuth.instance.signOut();
+              // ログイン画面に遷移＋チャット画面を破棄
+              await Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) {
+                  return const LoginPage();
+                }),
+              );
+            },
            ),
           ]),
         )
