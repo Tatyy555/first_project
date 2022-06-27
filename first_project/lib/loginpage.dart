@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:first_project/newslistpage.dart';
-
+// Firebase authと連携させるため以下追加。
+import 'package:firebase_auth/firebase_auth.dart';
 
 // ログイン画面用Widget
 class LoginPage extends StatefulWidget {
@@ -76,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               // パスワード入力
               TextFormField(
-                decoration: const InputDecoration(labelText: 'パスワード'),
+                decoration: const InputDecoration(labelText: 'パスワード(6文字以上)'),
+                // パスワードが見えないようにする。
                 obscureText: true,
                 onChanged: (String value) {
                   setState(() {
@@ -99,35 +101,27 @@ class _LoginPageState extends State<LoginPage> {
                     child: OutlinedButton(
                       child: const Text('ログイン'),
                       onPressed: () async {
-
-                        // 一旦、ログイン画面を押すとニュースリスト画面に遷移するようにしました。
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context)=> const NewsListPage())
-                        );
-
-
-                        // // firbaseを導入してから着手する。
-                        // try {
-                        //   // メール/パスワードでログイン
-                        //   final FirebaseAuth auth = FirebaseAuth.instance;
-                        //   final result = await auth.signInWithEmailAndPassword(
-                        //     email: email,
-                        //     password: password,
-                        //   );
-                        //   // ログインに成功した場合
-                        //   // チャット画面に遷移＋ログイン画面を破棄
-                        //   await Navigator.of(context).pushReplacement(
-                        //     MaterialPageRoute(builder: (context) {
-                        //       return ChatPage(result.user!);
-                        //     }),
-                        //   );
-                        // } catch (e) {
-                        //   // ログインに失敗した場合
-                        //   setState(() {
-                        //     infoText = "ログインに失敗しました：${e.toString()}";
-                        //   });
-                        // }
+                        // Firebaseと連携させるため以下追加。
+                        try {
+                          // メール/パスワードでログイン
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final result = await auth.signInWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          // ログインに成功した場合
+                          // チャット画面に遷移＋ログイン画面を破棄
+                          await Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) {
+                              return NewsListPage(result.user!);
+                            }),
+                          );
+                        } catch (e) {
+                          // ログインに失敗した場合
+                          setState(() {
+                            infoText = "ログインに失敗しました：${e.toString()}";
+                          });
+                        }
                       },
                     ),
                   ),
@@ -137,27 +131,27 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       child: const Text('ユーザー登録'),
                       onPressed: () async {
-                        // // firebaseを導入してから着手する。
-                        // try {
-                        //   // メール/パスワードでユーザー登録
-                        //   final FirebaseAuth auth = FirebaseAuth.instance;
-                        //   final result = await auth.createUserWithEmailAndPassword(
-                        //     email: email,
-                        //     password: password,
-                        //   );
-                        //   // ユーザー登録に成功した場合
-                        //   // チャット画面に遷移＋ログイン画面を破棄
-                        //   await Navigator.of(context).pushReplacement(
-                        //     MaterialPageRoute(builder: (context) {
-                        //       return ChatPage(result.user!);
-                        //     }),
-                        //   );
-                        // } catch (e) {
-                        //   // ユーザー登録に失敗した場合
-                        //   setState(() {
-                        //     infoText = "登録に失敗しました：${e.toString()}";
-                        //   });
-                        // }
+                        // firebase Authと連携。
+                        try {
+                          // メール/パスワードでユーザー登録
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final result = await auth.createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          // ユーザー登録に成功した場合
+                          // チャット画面に遷移＋ログイン画面を破棄
+                          await Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) {
+                              return NewsListPage(result.user!);
+                            }),
+                          );
+                        } catch (e) {
+                          // ユーザー登録に失敗した場合
+                          setState(() {
+                            infoText = "登録に失敗しました：${e.toString()}";
+                          });
+                        }
                       },
                     ),
                   ),

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "795031104358",
+    "project_id": "my-news-logs-app",
+    "storage_bucket": "my-news-logs-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795031104358:android:a2e3e3d4410d79dc1cb6a7",
+        "android_client_info": {
+          "package_name": "com.example.first_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795031104358-7t9eabgjvfqo4ke8dmo90qkl3gpcctaq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkj7RkPwOk2oxemAkqvvxgmSi-KbRFy1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795031104358-7t9eabgjvfqo4ke8dmo90qkl3gpcctaq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "795031104358-g5afec6kuqh2epfa7i19lcirri5gur3f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firstProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
