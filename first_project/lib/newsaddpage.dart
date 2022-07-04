@@ -6,6 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
 
+// hashtag機能を実装。
+import 'package:material_tag_editor/tag_editor.dart';
+
 // ニュース追加画面用のWidget。
 class NewsAddPage extends StatefulWidget{
  
@@ -24,7 +27,18 @@ class _NewsAddPageState extends State<NewsAddPage>{
   String hash = ''; 
   String comment = '';  
   
-  
+  // hashtag用の情報。
+  final List<String> _values = [];
+  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _textEditingController = TextEditingController();
+
+  _onDelete(index) {
+    setState(() {
+      _values.removeAt(index);
+    });
+  }
+
+
   @override 
   Widget build(BuildContext context){
     return Scaffold(
@@ -48,22 +62,7 @@ class _NewsAddPageState extends State<NewsAddPage>{
                 }
               ),
             ),
-            Expanded(
-              flex: 2, // 割合.
-              child:TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'ハッシュタグ',
-                  labelText: 'ハッシュタグ',
-                ),
-                maxLines: 3,
-                onChanged: (String value) {
-                  setState(() {
-                    hash = value;
-                  });
-                }
-              ),
-            ),
+
             Expanded(
               flex: 4, // 割合.
               child:TextFormField(
@@ -78,6 +77,36 @@ class _NewsAddPageState extends State<NewsAddPage>{
                     comment = value;
                   });
                 }
+              ),
+            ),
+
+            TagEditor(
+              length: _values.length,
+              controller: _textEditingController,
+              focusNode: _focusNode,
+              delimiters: const [',', ' '],
+              hasAddButton: true,
+              resetTextOnSubmitted: true,
+              // This is set to grey just to illustrate the `textStyle` prop
+              textStyle: const TextStyle(color: Colors.grey),
+              onSubmitted: (outstandingValue) {
+                setState(() {
+                  _values.add(outstandingValue);
+                });
+              },
+              inputDecoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'タグを設定してください',
+              ),
+              onTagChanged: (newValue) {
+                setState(() {
+                  _values.add(newValue);
+                });
+              },
+              tagBuilder: (context, index) => _Chip(
+                index: index,
+                label: _values[index],
+                onDeleted: _onDelete,
               ),
             ),
             Expanded(
@@ -131,5 +160,29 @@ class _NewsAddPageState extends State<NewsAddPage>{
     );
   }
 }
+class _Chip extends StatelessWidget {
+  const _Chip({
+    required this.label,
+    required this.onDeleted,
+    required this.index,
+  });
 
+  final String label;
+  final ValueChanged<int> onDeleted;
+  final int index;
 
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      labelPadding: const EdgeInsets.only(left: 8.0),
+      label: Text(label),
+      deleteIcon: const Icon(
+        Icons.close,
+        size: 18,
+      ),
+      onDeleted: () {
+        onDeleted(index);
+      },
+    );
+  }
+}
