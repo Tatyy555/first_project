@@ -5,8 +5,6 @@ import 'package:first_project/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// Firestoreと連携させるため以下追加。
-
 // Firebaseと連携されるたmain()を以下の通り修正。
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,9 +13,6 @@ void main() async {
   );
   runApp(const FirstProject());
 }
-
-
-
 
 class FirstProject extends StatelessWidget {
   const FirstProject({Key? key}) : super(key: key);

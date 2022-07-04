@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:first_project/newslistpage.dart';
+
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
 
