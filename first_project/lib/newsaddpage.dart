@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 
-
 // Firestoreと連携させるため以下追加。
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Firebase authと連携させるため以下追加。
+import 'package:firebase_auth/firebase_auth.dart';
+
+// hashtag機能を実装。
+import 'package:material_tag_editor/tag_editor.dart';
 
 // ニュース追加画面用のWidget。
 class NewsAddPage extends StatefulWidget{
-  const NewsAddPage({Key? key}) : super(key: key);
+ 
+  // 引数からユーザー情報を受け取る
+  const NewsAddPage(this.user);
+  // ユーザー情報
+  final User user;
+  
   @override
   _NewsAddPageState createState() => _NewsAddPageState();
 }
@@ -17,7 +27,18 @@ class _NewsAddPageState extends State<NewsAddPage>{
   String hash = ''; 
   String comment = '';  
   
-  
+  // hashtag用の情報。
+  final List<String> _values = [];
+  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _textEditingController = TextEditingController();
+
+  _onDelete(index) {
+    setState(() {
+      _values.removeAt(index);
+    });
+  }
+
+
   @override 
   Widget build(BuildContext context){
     return Scaffold(
@@ -41,22 +62,7 @@ class _NewsAddPageState extends State<NewsAddPage>{
                 }
               ),
             ),
-            Expanded(
-              flex: 2, // 割合.
-              child:TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'ハッシュタグ',
-                  labelText: 'ハッシュタグ',
-                ),
-                maxLines: 3,
-                onChanged: (String value) {
-                  setState(() {
-                    hash = value;
-                  });
-                }
-              ),
-            ),
+
             Expanded(
               flex: 4, // 割合.
               child:TextFormField(
@@ -73,6 +79,36 @@ class _NewsAddPageState extends State<NewsAddPage>{
                 }
               ),
             ),
+
+            TagEditor(
+              length: _values.length,
+              controller: _textEditingController,
+              focusNode: _focusNode,
+              delimiters: const [',', ' '],
+              hasAddButton: true,
+              resetTextOnSubmitted: true,
+              // This is set to grey just to illustrate the `textStyle` prop
+              textStyle: const TextStyle(color: Colors.grey),
+              onSubmitted: (outstandingValue) {
+                setState(() {
+                  _values.add(outstandingValue);
+                });
+              },
+              inputDecoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'タグを設定してください',
+              ),
+              onTagChanged: (newValue) {
+                setState(() {
+                  _values.add(newValue);
+                });
+              },
+              tagBuilder: (context, index) => _Chip(
+                index: index,
+                label: _values[index],
+                onDeleted: _onDelete,
+              ),
+            ),
             Expanded(
               flex: 2, // 割合.
               child: Row(
@@ -85,7 +121,21 @@ class _NewsAddPageState extends State<NewsAddPage>{
                     child: ElevatedButton(
                       child: const Text('登録'),
                       onPressed: () async {
-                        // 前の画面に戻るだけです（何もデータは渡さない。）
+                        // 現在の日時
+                        final date = DateTime.now().toLocal().toIso8601String(); 
+                        // NewsAddPageのデータを参照
+                        final email = widget.user.email; 
+                         // 登録用ドキュメント作成
+                        await FirebaseFirestore.instance
+                        .collection('news') // コレクションID指定
+                        .doc() // ドキュメントID自動生成
+                        .set({
+                          'url': url,
+                          'hash': hash,    
+                          'comment': comment,
+                          'email': email,
+                          'date': date
+                        });
                         Navigator.of(context).pop();
                       },
                     ),
@@ -110,53 +160,29 @@ class _NewsAddPageState extends State<NewsAddPage>{
     );
   }
 }
+class _Chip extends StatelessWidget {
+  const _Chip({
+    required this.label,
+    required this.onDeleted,
+    required this.index,
+  });
 
+  final String label;
+  final ValueChanged<int> onDeleted;
+  final int index;
 
-//       body: Container(
-//         // 余白をつける。
-//         padding: const EdgeInsets.all(40),
-//         // 縦に並べる。
-//         child: Column(
-//           // 真ん中に配置する。
-//           mainAxisAlignment: MainAxisAlignment.center,
-          
-//           children: <Widget>[
-//             // テキストを表示。
-//             Text(_text),
-//             // テキストを入力できるBox作成。入力された値は_textに格納する。
-//             TextField(
-//               onChanged: (String value){
-//                 setState((){
-//                   _text = value;
-//                 });
-//               }
-//             ),
-//             // 追加ボタンの作成。
-//             SizedBox(
-//               // 横幅いっぱいに広げる。
-//               width: double.infinity,
-//               child: ElevatedButton(
-//                 onPressed: () {
-//                   // _textを前の画面に渡す。
-//                   Navigator.of(context).pop(_text);
-//                 },
-//                 child: const Text('リスト追加'),
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             SizedBox(
-//               width: double.infinity,
-//               child: TextButton(
-//                 onPressed: () {
-//                   // 前の画面に戻るだけ（何もデータは渡さない。）
-//                   Navigator.of(context).pop();
-//                 },
-//                 child: const Text('キャンセル'),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      labelPadding: const EdgeInsets.only(left: 8.0),
+      label: Text(label),
+      deleteIcon: const Icon(
+        Icons.close,
+        size: 18,
+      ),
+      onDeleted: () {
+        onDeleted(index);
+      },
+    );
+  }
+}
