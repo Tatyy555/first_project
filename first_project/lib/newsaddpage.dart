@@ -44,193 +44,211 @@ class _NewsAddPageState extends State<NewsAddPage> {
           bottom: false,
           child: Column(
             children: [
-              Container(
-                height: 100,
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'ニュース登録',
-                  style: TextStyle(
-                    color: kBaseColor,
-                    fontSize: 30,
+              Center(
+                child:Container(
+                  padding: const EdgeInsets.all(20),
+                  child: const Text(
+                    'ニュース登録',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: kBaseColor,
+                      fontSize: 30,
+                    ),
                   ),
                 ),
               ),
               Expanded(
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50),
-                        ),
-                        color: kBaseColor,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
                       ),
-                      child: Column(children: <Widget>[
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            'URL',
-                            style: TextStyle(
-                                color: kAccentColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                    color: kBaseColor,
+                  ),
+                  child: Column(children: <Widget>[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                      const SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'URL',
+                          style: TextStyle(
+                            color: kAccentColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
-                        TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            maxLines: 1,
-                            onChanged: (String value) {
-                              setState(() {
-                                url = value;
-                              });
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            'ハッシュタグ',
-                            style: TextStyle(
-                                color: kAccentColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        TagEditor(
-                          length: _values.length,
-                          controller: _textEditingController,
-                          focusNode: _focusNode,
-                          delimiters: const [',', ' '],
-                          hasAddButton: true,
-                          resetTextOnSubmitted: true,
-                          // This is set to grey just to illustrate the `textStyle` prop
-                          textStyle: const TextStyle(color: Colors.grey),
-                          onSubmitted: (outstandingValue) {
-                            setState(() {
-                              _values.add(outstandingValue);
-                            });
-                          },
-                          inputDecoration: InputDecoration(
+                        maxLines: 1,
+                        onChanged: (String value) {
+                          setState(() {
+                            url = value;
+                          });
+                        }
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'ハッシュタグ',
+                          style: TextStyle(
+                              color: kAccentColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                      TagEditor(
+                        length: _values.length,
+                        controller: _textEditingController,
+                        focusNode: _focusNode,
+                        delimiters: const [',', ' '],
+                        hasAddButton: true,
+                        resetTextOnSubmitted: true,
+                        // This is set to grey just to illustrate the `textStyle` prop
+                        textStyle: const TextStyle(color: Colors.grey),
+                        onSubmitted: (outstandingValue) {
+                          setState(() {
+                            _values.add(outstandingValue);
+                          });
+                        },
+                        inputDecoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onTagChanged: (newValue) {
+                          setState(() {
+                            _values.add(newValue);
+                          });
+                        },
+                        tagBuilder: (context, index) => _Chip(
+                          index: index,
+                          label: _values[index],
+                          onDeleted: _onDelete,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'コメント',
+                          style: TextStyle(
+                              color: kAccentColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                        child:TextFormField(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(15)
                             ),
-                            hintText: 'タグを設定してください',
                           ),
-                          onTagChanged: (newValue) {
+                          maxLines: 10,
+                          onChanged: (String value) {
                             setState(() {
-                              _values.add(newValue);
+                              comment = value;
                             });
-                          },
-                          tagBuilder: (context, index) => _Chip(
-                            index: index,
-                            label: _values[index],
-                            onDeleted: _onDelete,
-                          ),
+                          }
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            'コメント',
-                            style: TextStyle(
-                                color: kAccentColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
-                            maxLines: 10,
-                            onChanged: (String value) {
-                              setState(() {
-                                comment = value;
-                              });
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                            // 余白を均等に並べる。
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 130,
-                                height: 60,
-                                // 登録ボタン
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: kMainColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(70),
-                                      )),
-                                  child: const Text(
-                                    '登録',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () async {
-                                    // 現在の日時
-                                    final date = DateTime.now()
-                                        .toLocal()
-                                        .toIso8601String();
-                                    // NewsAddPageのデータを参照
-                                    final email = widget.user.email;
-                                    // 登録用ドキュメント作成
-                                    await FirebaseFirestore.instance
-                                        .collection('news') // コレクションID指定
-                                        .doc() // ドキュメントID自動生成
-                                        .set({
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        // 余白を均等に並べる。
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 130,
+                            height: 60,
+                            // 登録ボタン
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: kMainColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(70),
+                                  )),
+                              child: const Text(
+                                '登録',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              onPressed: () async {
+                                // 現在の日時
+                                final date = DateTime.now()
+                                    .toLocal()
+                                    .toIso8601String();
+                                // NewsAddPageのデータを参照
+                                final email = widget.user.email;
+                                // 登録用ドキュメント作成
+                                await FirebaseFirestore.instance
+                                    .collection('news') // コレクションID指定
+                                    .doc() // ドキュメントID自動生成
+                                    .set({
                                       'url': url,
                                       'hash': hash,
                                       'comment': comment,
                                       'email': email,
                                       'date': date
                                     });
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 130,
+                            height: 60,
+                            // 破棄ボタン
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(70),
+                                )
                               ),
-                              SizedBox(
-                                width: 130,
-                                height: 60,
-                                // 破棄ボタン
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: kMainColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(70),
-                                      )),
-                                  child: const Text(
-                                    '破棄',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () async {
-                                    // 前の画面に戻るだけです（何もデータは渡さない。）
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+                              child: const Text(
+                                '破棄',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ]),
-                      ])))
+                              onPressed: () async {
+                                // 前の画面に戻るだけです（何もデータは渡さない。）
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                        ]
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ]
+                  )
+                )
+              )
             ],
           ),
-        ));
+        )
+      );
   }
 }
 
