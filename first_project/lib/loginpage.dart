@@ -4,6 +4,8 @@ import 'package:first_project/newslistpage.dart';
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'constants.dart';
+
 // ログイン画面用Widget
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,145 +23,204 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // メインロゴ
-              Container(
-                width: 200,
-                height: 200,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
+      backgroundColor: kMainColor,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              child: Image.asset('assets/images/logo.png'),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'News Logs',
+              style: TextStyle(fontSize: 35, color: kBaseColor),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                  color: kBaseColor,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, 
-                  children:const <Widget>[
-                    // いい感じの余白を挿入する。
-                    Text('',
-                      style: TextStyle(
-                        fontSize: 10,
-                      )
+                  children: <Widget>[
+                    SizedBox(
+                      height: 80,
                     ),
-                    Text('NEWS',
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.white, 
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        'メールアドレス',
+                        style: TextStyle(
+                          color: kAccentColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    Text('LOG',
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.white, 
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      onChanged: (String value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        'パスワード(6文字以上)',
+                        style: TextStyle(
+                          color: kAccentColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ]
-                )
-              ),  
-
-              // いい感じの余白を挿入する。
-              const Text('',
-                style: TextStyle(
-                  fontSize: 30,
-                )
-              ),
-
-              // メールアドレス入力
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'メールアドレス'),
-                onChanged: (String value) {
-                  setState(() {
-                    email = value;
-                  });
-                },
-              ),
-              // パスワード入力
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'パスワード(6文字以上)'),
-                // パスワードが見えないようにする。
-                obscureText: true,
-                onChanged: (String value) {
-                  setState(() {
-                    password = value;
-                  });
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                // メッセージ表示
-                child: Text(infoText),
-              ),
-              Row(
-                // 余白を均等に並べる。
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children:<Widget>[
-                  SizedBox(
-                    width: 120,
-                    // ログイン登録ボタン
-                    child: OutlinedButton(
-                      child: const Text('ログイン'),
-                      onPressed: () async {
-                        // Firebaseと連携させるため以下追加。
-                        try {
-                          // メール/パスワードでログイン
-                          final FirebaseAuth auth = FirebaseAuth.instance;
-                          final result = await auth.signInWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
-                          // ログインに成功した場合
-                          // チャット画面に遷移＋ログイン画面を破棄
-                          await Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) {
-                              return NewsListPage(result.user!);
-                            }),
-                          );
-                        } catch (e) {
-                          // ログインに失敗した場合
-                          setState(() {
-                            infoText = "ログインに失敗しました：${e.toString()}";
-                          });
-                        }
+                    // パスワード入力
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      // パスワードが見えないようにする。
+                      obscureText: true,
+                      onChanged: (String value) {
+                        setState(() {
+                          password = value;
+                        });
                       },
                     ),
-                  ),
-                  SizedBox(
-                    width: 120,
-                    // ユーザー登録ボタン
-                    child: ElevatedButton(
-                      child: const Text('ユーザー登録'),
-                      onPressed: () async {
-                        // firebase Authと連携。
-                        try {
-                          // メール/パスワードでユーザー登録
-                          final FirebaseAuth auth = FirebaseAuth.instance;
-                          final result = await auth.createUserWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
-                          // ユーザー登録に成功した場合
-                          // チャット画面に遷移＋ログイン画面を破棄
-                          await Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) {
-                              return NewsListPage(result.user!);
-                            }),
-                          );
-                        } catch (e) {
-                          // ユーザー登録に失敗した場合
-                          setState(() {
-                            infoText = "登録に失敗しました：${e.toString()}";
-                          });
-                        }
-                      },
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                ]
-              )
-            ],
-          ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      // メッセージ表示
+                      child: Text(infoText),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                        // 余白を均等に並べる。
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 130,
+                            height: 60,
+                            // ログイン登録ボタン
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: kMainColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(70),
+                                  )),
+                              child: const Text(
+                                'ログイン',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: kBaseColor),
+                              ),
+                              onPressed: () async {
+                                // Firebaseと連携させるため以下追加。
+                                try {
+                                  // メール/パスワードでログイン
+                                  final FirebaseAuth auth =
+                                      FirebaseAuth.instance;
+                                  final result =
+                                      await auth.signInWithEmailAndPassword(
+                                    email: email,
+                                    password: password,
+                                  );
+                                  // ログインに成功した場合
+                                  // チャット画面に遷移＋ログイン画面を破棄
+                                  await Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) {
+                                      return NewsListPage(result.user!);
+                                    }),
+                                  );
+                                } catch (e) {
+                                  // ログインに失敗した場合
+                                  setState(() {
+                                    infoText = "ログインに失敗しました：${e.toString()}";
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 130,
+                            height: 60,
+                            // ユーザー登録ボタン
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: kMainColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(70),
+                                  )),
+                              child: const Text(
+                                '新規登録',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: kBaseColor),
+                              ),
+                              onPressed: () async {
+                                // firebase Authと連携。
+                                try {
+                                  // メール/パスワードでユーザー登録
+                                  final FirebaseAuth auth =
+                                      FirebaseAuth.instance;
+                                  final result =
+                                      await auth.createUserWithEmailAndPassword(
+                                    email: email,
+                                    password: password,
+                                  );
+                                  // ユーザー登録に成功した場合
+                                  // チャット画面に遷移＋ログイン画面を破棄
+                                  await Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) {
+                                      return NewsListPage(result.user!);
+                                    }),
+                                  );
+                                } catch (e) {
+                                  // ユーザー登録に失敗した場合
+                                  setState(() {
+                                    infoText = "登録に失敗しました：${e.toString()}";
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ])
+                  ],
+                ),
+              ),
+            ),
+            // メールアドレス入力
+          ],
         ),
       ),
     );
