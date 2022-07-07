@@ -1,6 +1,7 @@
 import 'package:first_project/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/newsaddpage.dart';
+import 'package:first_project/newseditpage.dart';
 
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // newslinkから表示。
 import 'package:any_link_preview/any_link_preview.dart';
+
+// flutter_slidableを利用するため以下追加。
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 // ニュースリスト画面のWidget。
@@ -75,59 +79,85 @@ class NewsListPage extends StatelessWidget{
                     return ListView(
                       children: documents.map((document) {
                         return Card( 
-                          child: Column(
-                            children: <Widget>[
-                              if(document['email'] == user.email)
-                              Column(
-                                children:<Widget>[
-                                  AnyLinkPreview(
-                                    link: document['url'],
-                                    errorWidget: const Text('エラー'),
-                                  ),
-                                  SizedBox(
-                                    child:Column(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: const EdgeInsetsDirectional.only(top:10),
-                                          alignment:const Alignment(-1, 0),  
-                                          child:Text(document['comment']),
-                                          ),
-                                        Container(
-                                          padding: const EdgeInsetsDirectional.only(top:10),
-                                          child:Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              // まだハッシュ機能は実装していない。
-                                              Text('#'+ document['hash']),
-                                            ]
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsetsDirectional.only(top:10),
-                                            child:Column(
-                                              children:[
-                                              Text(document['date']),
-                                              Text(document['email']),
-                                            ]
-                                          ),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          onPressed: () async {
-                                            // Newsの削除
-                                            await FirebaseFirestore.instance
-                                                .collection('news')
-                                                .doc(document.id)
-                                                .delete();
-                                          },
-                                        )
-                                      ]
-                                    )
-                                  )
-                                ]
+                          // スライドで右に削除と編集ボタンを表示。
+                          child:Slidable(
+                            endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                // onPressed: null,
+                                onPressed: (BuildContext context) async {
+                                  // Newsの削除
+                                  await FirebaseFirestore.instance
+                                  .collection('news')
+                                  .doc(document.id)
+                                  .delete();
+                                },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
                               ),
-                            ]
-                          )
+                              const SlidableAction(
+                                onPressed: null,
+                                // onPressed: (BuildContext context) async {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context)=> NewsEditPage(user,document),
+                                //   )
+                                // );},
+                                backgroundColor: Color(0xFF21B7CA),
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              ),
+                            ],
+                          ),
+                          
+                            child: Column(
+                              children: <Widget>[
+                                if(document['email'] == user.email)
+                                Column(
+                                  children:<Widget>[
+                                    AnyLinkPreview(
+                                      link: document['url'],
+                                      errorWidget: const Text('エラー'),
+                                    ),
+                                    SizedBox(
+                                      child:Column(
+                                        children: <Widget>[
+                                          Container(
+                                            padding: const EdgeInsetsDirectional.only(top:10),
+                                            alignment:const Alignment(-1, 0),  
+                                            child:Text(document['comment']),
+                                            ),
+                                          Container(
+                                            padding: const EdgeInsetsDirectional.only(top:10),
+                                            child:Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                // まだハッシュ機能は実装していない。
+                                                Text('#'+ document['hash']),
+                                              ]
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsetsDirectional.only(top:10),
+                                              child:Column(
+                                                children:[
+                                                Text(document['date']),
+                                                Text(document['email']),
+                                              ]
+                                            ),
+                                          ),
+                                        ]
+                                      )
+                                    )
+                                  ]
+                                ),
+                              ]
+                            )
+                          ),
                         );
                       }).toList(),
                     );
@@ -149,7 +179,9 @@ class NewsListPage extends StatelessWidget{
           // プラスボタンを押すとニュース追加画面へ遷移。
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context)=> NewsAddPage(user))
+              MaterialPageRoute(builder: (context)=> NewsAddPage(user),
+                fullscreenDialog: true
+              )
             );
           /* ボタンがタップされた時の処理 */},
         child: const Icon(Icons.add),
