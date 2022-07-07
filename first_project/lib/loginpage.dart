@@ -28,26 +28,26 @@ class _LoginPageState extends State<LoginPage> {
         bottom: false,
         child: Column(
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Container(
-              child: Image.asset('assets/images/logo.png'),
+              child: Image.asset('assets/images/logo2.png'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               'News Logs',
               style: TextStyle(fontSize: 35, color: kBaseColor),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50),
                     topRight: Radius.circular(50),
@@ -56,10 +56,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 80,
                     ),
-                    Container(
+                    const SizedBox(
                       width: double.infinity,
                       child: Text(
                         'メールアドレス',
@@ -82,10 +82,10 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
-                    Container(
+                    const SizedBox(
                       width: double.infinity,
                       child: Text(
                         'パスワード(6文字以上)',
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                       // メッセージ表示
                       child: Text(infoText),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
