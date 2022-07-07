@@ -1,7 +1,7 @@
 import 'package:first_project/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/newsaddpage.dart';
-import 'package:first_project/newseditpage.dart';
+// import 'package:first_project/newseditpage.dart';
 
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';

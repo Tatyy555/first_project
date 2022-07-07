@@ -28,22 +28,18 @@ class _LoginPageState extends State<LoginPage> {
         bottom: false,
         child: Column(
           children: <Widget>[
-            const SizedBox(
-              height: 50,
-            ),
+            // 小さい画面（iPhone8）では画面が見切れてしまっていたので、以下調整加えました。
             Container(
+              padding: const EdgeInsets.only(top: 30),
+              width:100,
               child: Image.asset('assets/images/logo3.png'),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
+            Container(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: const Text(
               'News Logs',
               style: TextStyle(fontSize: 35, color: kBaseColor),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
+            ),),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
