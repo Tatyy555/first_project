@@ -1,24 +1,19 @@
 import 'package:first_project/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/newsaddpage.dart';
-// import 'package:first_project/newseditpage.dart';
-
+import 'package:first_project/newseditpage.dart';
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
-
 // Firestoreと連携させるため以下追加。
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 // newslinkから表示。
 import 'package:any_link_preview/any_link_preview.dart';
-
 // flutter_slidableを利用するため以下追加。
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-
 // ニュースリスト画面のWidget。
 class NewsListPage extends StatelessWidget{
-  
+ 
   // 引数からユーザー情報を受け取れるようにする
   NewsListPage(this.user);
   // ユーザー情報
@@ -26,31 +21,6 @@ class NewsListPage extends StatelessWidget{
 
   // Drawerをタップで表示できるようにGlibalKeyを設定。
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _getMetadata(String url) async {
-    bool isValid = _getUrlValid(url);
-    if (isValid) {
-      Metadata? metadata = await AnyLinkPreview.getMetadata(
-        link: url,
-        cache: const Duration(days: 7),
-        proxyUrl: "https://cors-anywhere.herokuapp.com/", // Needed for web app
-      );
-      debugPrint(metadata?.title);
-      debugPrint(metadata?.desc);
-    } else {
-      debugPrint("URL is not valid");
-    }
-  }
-
-  bool _getUrlValid(String url) {
-    bool isUrlValid = AnyLinkPreview.isValidLink(
-      url,
-      protocols: ['http', 'https'],
-      hostWhitelist: ['https://youtube.com/'],
-      hostBlacklist: ['https://facebook.com/'],
-    );
-    return isUrlValid;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,37 +52,36 @@ class NewsListPage extends StatelessWidget{
                           // スライドで右に削除と編集ボタンを表示。
                           child:Slidable(
                             endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                // onPressed: null,
-                                onPressed: (BuildContext context) async {
-                                  // Newsの削除
-                                  await FirebaseFirestore.instance
-                                  .collection('news')
-                                  .doc(document.id)
-                                  .delete();
-                                },
-                                backgroundColor: const Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                              const SlidableAction(
-                                onPressed: null,
-                                // onPressed: (BuildContext context) async {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context)=> NewsEditPage(user,document),
-                                //   )
-                                // );},
-                                backgroundColor: Color(0xFF21B7CA),
-                                foregroundColor: Colors.white,
-                                icon: Icons.edit,
-                                label: 'Edit',
-                              ),
-                            ],
-                          ),
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  // onPressed: null,
+                                  onPressed: (BuildContext context) async {
+                                    // Newsの削除
+                                    await FirebaseFirestore.instance
+                                    .collection('news')
+                                    .doc(document.id)
+                                    .delete();
+                                  },
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                                SlidableAction(
+                                  onPressed: (BuildContext context) async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context)=> NewsEditPage(user,document),)
+                                    );
+                                  },
+                                  backgroundColor: const Color(0xFF21B7CA),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.edit,
+                                  label: 'Edit',
+                                ),
+                              ],
+                            ),
                           
                             child: Column(
                               children: <Widget>[
@@ -251,7 +220,7 @@ class NewsListPage extends StatelessWidget{
             // 内部で保持しているログイン情報等が初期化される
             await FirebaseAuth.instance.signOut();
             // ログイン画面に遷移＋チャット画面を破棄
-            await Navigator.of(context).pushReplacement(
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) {
                 return const LoginPage();
               }),
