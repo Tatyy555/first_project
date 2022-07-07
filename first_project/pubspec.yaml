@@ -46,24 +46,24 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.png"
-  image_path_android: "assets/images/logo.png"
-  image_path_ios: "assets/images/logo.png"
+  image_path: "assets/images/logo2.png"
+  image_path_android: "assets/images/logo2.png"
+  image_path_ios: "assets/images/logo2.png"
   remove_alpha_ios: true
 
 
 # flutter_native_splashの設定
 flutter_native_splash:
-  color: '#FAFAFA'
-  image: 'assets/images/logo.png'
-  color_dark: '#FAFAFA'
-  image_dark: 'assets/images/logo.png'
+  color: '#283b96'
+  image: 'assets/images/logo2.png'
+  color_dark: '#283b96'
+  image_dark: 'assets/images/logo2.png'
   fullscreen: true
   android_12:
-    icon_background_color: '#FAFAFA'
-    image: 'assets/images/logo.png'
-    icon_background_color_dark: '#FAFAFA'
-    image_dark: 'assets/images/logo.png'
+    icon_background_color: '#283b96'
+    image: 'assets/images/logo2.png'
+    icon_background_color_dark: '#283b96'
+    image_dark: 'assets/images/logo2.png'
 
 
 dev_dependencies:
@@ -89,8 +89,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
