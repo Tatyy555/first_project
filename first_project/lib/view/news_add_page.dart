@@ -138,7 +138,7 @@ class NewsAddPage extends HookConsumerWidget {
                     // ),
 
                   TextField(
-                    controller: urltextController,
+                    // controller: urltextController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
