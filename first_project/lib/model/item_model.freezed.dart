@@ -24,6 +24,7 @@ mixin _$Item {
   String get url => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String get hash => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
   @DateTimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $ItemCopyWith<$Res> {
       String url,
       String comment,
       String email,
+      String hash,
       bool isCompleted,
       @DateTimeTimestampConverter() DateTime createdAt});
 }
@@ -60,6 +62,7 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
     Object? url = freezed,
     Object? comment = freezed,
     Object? email = freezed,
+    Object? hash = freezed,
     Object? isCompleted = freezed,
     Object? createdAt = freezed,
   }) {
@@ -79,6 +82,10 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      hash: hash == freezed
+          ? _value.hash
+          : hash // ignore: cast_nullable_to_non_nullable
               as String,
       isCompleted: isCompleted == freezed
           ? _value.isCompleted
@@ -102,6 +109,7 @@ abstract class _$$_ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       String url,
       String comment,
       String email,
+      String hash,
       bool isCompleted,
       @DateTimeTimestampConverter() DateTime createdAt});
 }
@@ -121,6 +129,7 @@ class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
     Object? url = freezed,
     Object? comment = freezed,
     Object? email = freezed,
+    Object? hash = freezed,
     Object? isCompleted = freezed,
     Object? createdAt = freezed,
   }) {
@@ -140,6 +149,10 @@ class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      hash: hash == freezed
+          ? _value.hash
+          : hash // ignore: cast_nullable_to_non_nullable
               as String,
       isCompleted: isCompleted == freezed
           ? _value.isCompleted
@@ -161,6 +174,7 @@ class _$_Item extends _Item {
       required this.url,
       required this.comment,
       required this.email,
+      required this.hash,
       this.isCompleted = false,
       @DateTimeTimestampConverter() required this.createdAt})
       : super._();
@@ -176,6 +190,8 @@ class _$_Item extends _Item {
   @override
   final String email;
   @override
+  final String hash;
+  @override
   @JsonKey()
   final bool isCompleted;
   @override
@@ -184,7 +200,7 @@ class _$_Item extends _Item {
 
   @override
   String toString() {
-    return 'Item(id: $id, url: $url, comment: $comment, email: $email, isCompleted: $isCompleted, createdAt: $createdAt)';
+    return 'Item(id: $id, url: $url, comment: $comment, email: $email, hash: $hash, isCompleted: $isCompleted, createdAt: $createdAt)';
   }
 
   @override
@@ -196,6 +212,7 @@ class _$_Item extends _Item {
             const DeepCollectionEquality().equals(other.url, url) &&
             const DeepCollectionEquality().equals(other.comment, comment) &&
             const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.hash, hash) &&
             const DeepCollectionEquality()
                 .equals(other.isCompleted, isCompleted) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
@@ -209,6 +226,7 @@ class _$_Item extends _Item {
       const DeepCollectionEquality().hash(url),
       const DeepCollectionEquality().hash(comment),
       const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(hash),
       const DeepCollectionEquality().hash(isCompleted),
       const DeepCollectionEquality().hash(createdAt));
 
@@ -229,6 +247,7 @@ abstract class _Item extends Item {
           required final String url,
           required final String comment,
           required final String email,
+          required final String hash,
           final bool isCompleted,
           @DateTimeTimestampConverter() required final DateTime createdAt}) =
       _$_Item;
@@ -244,6 +263,8 @@ abstract class _Item extends Item {
   String get comment;
   @override
   String get email;
+  @override
+  String get hash;
   @override
   bool get isCompleted;
   @override

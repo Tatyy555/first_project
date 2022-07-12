@@ -31,12 +31,13 @@ class Item with _$Item {
     required String url,
     required String comment,
     required String email,
+    required String hash,
     @Default(false) bool isCompleted,
     @DateTimeTimestampConverter() required DateTime createdAt,
   }) = _Item;
 
   // タスクを追加する際に、入力内容がなかった場合に入れるデータとして使います
-  factory Item.empty() => Item(url: '',comment: '', email:'', createdAt: DateTime.now());
+  factory Item.empty() => Item(url: '',comment: '', email:'', hash:'',createdAt: DateTime.now());
 
   // FirestoreとのデータのやりとりはMap型で行うので、変換して型を合わせるのに使います
   factory Item.fromDocument(DocumentSnapshot doc) {

@@ -6,6 +6,7 @@ import 'package:first_project/model/item_model.dart';
 import 'package:first_project/repository/auth_repository.dart';
 import 'package:first_project/view/news_add_page.dart';
 import 'package:first_project/view_model/item_list_view_model.dart';
+import 'package:first_project/constants.dart';
 // Firebaseと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
 // 状態管理を追加。
@@ -49,71 +50,109 @@ class ItemListPage extends HookConsumerWidget {
             return ProviderScope(
               // スライドで右に削除と編集ボタンを表示。
               child:SafeArea(
-                bottom: false,
-                child: Slidable(
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (BuildContext context) async {
-                          // データの削除
-                          itemListNotifier.deleteItem(
-                            itemId: item.id!, //削除するidの指定
-                          );
-                        },
-                        backgroundColor: const Color(0xFFFE4A49),
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
-                      ),
-                      SlidableAction(
-                        // onPressed:null, 
-                        // タスク作成ダイアログを表示する（更新）
-                        onPressed: (BuildContext context) async {
-                          NewsAddPage.show(context, item);
-                        },
-                        backgroundColor: const Color(0xFF21B7CA),
-                        foregroundColor: Colors.white,
-                        icon: Icons.edit,
-                        label: 'Edit',
-                      ),
-                    ],
-                  ),
-                      
-                  child: Column(
-                    children: <Widget>[
-                      if(item.email == user.email)
-                      Column(
-                        children:<Widget>[
-                          AnyLinkPreview(
-                            link: item.url,
-                            errorWidget: const Text('エラー'),
-                          ),
-                          SizedBox(
-                            child:Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsetsDirectional.only(top:10),
-                                  alignment:const Alignment(-1, 0),  
-                                  child:Text(item.comment),
-                                ),
-                                Container(
-                                  padding: const EdgeInsetsDirectional.only(top:10),
-                                    child:Column(
-                                      children:[
-                                      Text(getTodayDate()),
-                                      Text(item.email)
-                                    ]
+                bottom: false,               
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  // スライドで右に削除と編集ボタンを表示。                
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (BuildContext context) async {
+                            // データの削除
+                            itemListNotifier.deleteItem(
+                              itemId: item.id!, //削除するidの指定
+                            );
+                          },
+                          backgroundColor: const Color(0xFFFE4A49),
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                        SlidableAction(
+                          // onPressed:null, 
+                          // タスク作成ダイアログを表示する（更新）
+                          onPressed: (BuildContext context) async {
+                            NewsAddPage.show(context, item);
+                          },
+                          backgroundColor: const Color(0xFF21B7CA),
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                        ),
+                      ],
+                    ),                      
+                    child: Column(
+                      children: <Widget>[
+                        if(item.email == user.email)
+                        Column(
+                          children:<Widget>[
+                            AnyLinkPreview(
+                              link: item.url,
+                              errorWidget: const Text('エラー'),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      item.comment,
+                                      style: const TextStyle(
+                                          color: kTextColor,
+                                          fontSize: 14),
+                                      textAlign: TextAlign.left,
+                                    ),
                                   ),
-                                ),
-                              ]
-                            )
-                          )
-                        ]
-                      ),
-                    ]
-                  ),                 
-                ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        // まだハッシュ機能は実装していない。
+                                        Text(
+                                          '#${item.hash}',
+                                          style: const TextStyle(
+                                            backgroundColor:
+                                                kAccentColor,
+                                            color: kBaseColor,
+                                          ),
+                                        ),
+                                      ]),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      getTodayDate(),
+                                      style: const TextStyle(
+                                          color: kTextColor,
+                                          fontSize: 14),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ),
+                )
               )
             );
           },
@@ -122,55 +161,103 @@ class ItemListPage extends HookConsumerWidget {
         error: (error, _) => Text(error.toString()), //エラー時
       ),
 
-      // 下の＋マークのWidget。
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        // タスク作成ダイアログを表示する（追加）
-        onPressed: () => NewsAddPage.show(context, Item.empty()),
-        child: const Icon(Icons.add),
-      ),
-
-      // Under barの追加。
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).primaryColor,
-        shape: const CircularNotchedRectangle(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children:<Widget>[
-                  IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
-                    onPressed: () async {
-                      // ログアウト処理
-                      // 内部で保持しているログイン情報等が初期化される
-                      await FirebaseAuth.instance.signOut();
-                      // ログイン画面に遷移＋チャット画面を破棄
-                      Navigator.of(context).pushReplacement(
-                        PageTransition(child:LoginPage(), type: PageTransitionType.leftToRight)
-                      );
-                    },
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+        child: BottomAppBar(
+          color: kMainColor,
+          shape: const CircularNotchedRectangle(),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
+              left: 20,
+              right: 20,
+            ),
+            child: Row(
+              //mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: kBaseColor,
+                    size: 40,
                   ),
-                  // ハッシュタグ用。
-                  const IconButton(
-                    icon: Icon(
-                      Icons.numbers,
-                      color: Colors.white,
+                  onPressed: () async {
+                    var result = await showModalBottomSheet<int>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.logout),
+                              title: const Text('ログアウト'),
+                              onTap: () async { 
+                                // ログアウト処理
+                                // 内部で保持しているログイン情報等が初期化される
+                                await FirebaseAuth.instance.signOut();
+                                // ログイン画面に遷移＋チャット画面を破棄
+                                Navigator.of(context).pushReplacement(
+                                  PageTransition(child:LoginPage(), type: PageTransitionType.leftToRight)
+                                );
+                              },
+                            ),
+                            const ListTile(
+                              leading: Icon(Icons.videocam),
+                              title: Text('Sample'),
+                              onTap: null,
+                            ),
+                            const ListTile(
+                              leading: Icon(Icons.camera),
+                              title: Text('Sample'),
+                              onTap: null,
+                            ),
+                          ],
+                        );
+                      }
+                    );
+                  },
+                ),
+                IconButton(
+                  padding: const EdgeInsets.only(top: 10),
+                  icon: const Icon(
+                    Icons.numbers,
+                    color: kBaseColor,
+                    size: 30,
+                  ),
+                  onPressed: () {/* ボタンがタップされた時の処理 */},
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextButton(
+                    onPressed: () {/* ボタンがタップされた時の処理 */},
+                    child: const Text(
+                      'Stats',
+                      style: TextStyle(
+                        color: kBaseColor,
+                        fontSize: 20,
+                      ),
                     ),
-                    onPressed: null,
-                  ), 
-                ]
-              ),
-            ],
+                  ),
+                ),
+                FloatingActionButton(
+                  backgroundColor: kBaseColor,
+                  onPressed: () => NewsAddPage.show(context, Item.empty()),
+                  child: const Icon(
+                    Icons.add,
+                    color: kMainColor,
+                    size: 40,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),  
+      ),
+
     );
   }
 }

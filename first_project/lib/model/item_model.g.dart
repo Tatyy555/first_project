@@ -11,6 +11,7 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       url: json['url'] as String,
       comment: json['comment'] as String,
       email: json['email'] as String,
+      hash: json['hash'] as String,
       isCompleted: json['isCompleted'] as bool? ?? false,
       createdAt: const DateTimeTimestampConverter()
           .fromJson(json['createdAt'] as Timestamp),
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'url': instance.url,
       'comment': instance.comment,
       'email': instance.email,
+      'hash': instance.hash,
       'isCompleted': instance.isCompleted,
       'createdAt':
           const DateTimeTimestampConverter().toJson(instance.createdAt),

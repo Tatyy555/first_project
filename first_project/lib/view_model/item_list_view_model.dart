@@ -39,12 +39,13 @@ class ItemListNotifier extends StateNotifier<AsyncValue<List<Item>>> {
 
   // 追加
   Future<void> addItem(
-      {required String url, comment,email, bool isCompleted = false}) async {
+      {required String url, comment,email,hash, bool isCompleted = false}) async {
     try {
       final item = Item(
         url: url,
         comment: comment,
         email: email,
+        hash: hash,
         isCompleted: isCompleted,
         createdAt: DateTime.now(),
       );

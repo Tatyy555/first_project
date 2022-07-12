@@ -34,6 +34,7 @@ class NewsAddPage extends HookConsumerWidget {
     final urltextController = useTextEditingController(text: item.url);
     final commenttextController = useTextEditingController(text: item.comment);
     final emailtextController = useTextEditingController(text: user.email);
+    final hashtextController = useTextEditingController(text: item.hash);
     // provider（状態の操作）
     final itemListNotifier = ref.watch(itemListProvider.notifier);
     return  Scaffold(
@@ -138,7 +139,7 @@ class NewsAddPage extends HookConsumerWidget {
                     // ),
 
                   TextField(
-                    // controller: urltextController,
+                    controller: hashtextController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -198,12 +199,14 @@ class NewsAddPage extends HookConsumerWidget {
                                 url: urltextController.text.trim(),
                                 comment: commenttextController.text.trim(),
                                 email: emailtextController.text.trim(), 
+                                hash: hashtextController.text.trim(),
                               ),
                             ) : itemListNotifier.addItem(
                               // データの追加
                               url: urltextController.text.trim(),
                               comment:commenttextController.text.trim(),
                               email: emailtextController.text.trim(), 
+                              hash: hashtextController.text.trim(),
                             );
                             Navigator.of(context).pushReplacement(
                               PageTransition(child:const ItemListPage(), type: PageTransitionType.leftToRight)
