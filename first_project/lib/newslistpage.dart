@@ -2,18 +2,15 @@ import 'package:first_project/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:first_project/newsaddpage.dart';
 //import 'package:first_project/newseditpage.dart';
-
 // Firebase authと連携させるため以下追加。
 import 'package:firebase_auth/firebase_auth.dart';
-
 // Firestoreと連携させるため以下追加。
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 // newslinkから表示。
 import 'package:any_link_preview/any_link_preview.dart';
-
 // flutter_slidableを利用するため以下追加。
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 
 import 'constants.dart';
 
@@ -27,34 +24,10 @@ class NewsListPage extends StatelessWidget {
   // Drawerをタップで表示できるようにGlibalKeyを設定。
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _getMetadata(String url) async {
-    bool isValid = _getUrlValid(url);
-    if (isValid) {
-      Metadata? metadata = await AnyLinkPreview.getMetadata(
-        link: url,
-        cache: const Duration(days: 7),
-        proxyUrl: "https://cors-anywhere.herokuapp.com/", // Needed for web app
-      );
-      debugPrint(metadata?.title);
-      debugPrint(metadata?.desc);
-    } else {
-      debugPrint("URL is not valid");
-    }
-  }
-
-  bool _getUrlValid(String url) {
-    bool isUrlValid = AnyLinkPreview.isValidLink(
-      url,
-      protocols: ['http', 'https'],
-      hostWhitelist: ['https://youtube.com/'],
-      hostBlacklist: ['https://facebook.com/'],
-    );
-    return isUrlValid;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         backgroundColor: kBaseColor,
         body: SafeArea(
           bottom: false,
@@ -181,6 +154,7 @@ class NewsListPage extends StatelessWidget {
                                                 height: 20,
                                               ),
                                             ],
+
                                           ),
                                         ),
                                       ]),
@@ -301,21 +275,24 @@ class NewsListPage extends StatelessWidget {
                     "https://pbs.twimg.com/profile_images/885510796691689473/rR9aWvBQ_400x400.jpg"),
               ),
             ),
-            ListTile(
-              title: const Text('ログアウト'),
-              onTap: () async {
-                // ログアウト処理
-                // 内部で保持しているログイン情報等が初期化される
-                await FirebaseAuth.instance.signOut();
-                // ログイン画面に遷移＋チャット画面を破棄
-                await Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) {
-                    return const LoginPage();
-                  }),
-                );
-              },
-            ),
-          ]),
-        ));
+
+          ),
+          ListTile(
+            title: const Text('ログアウト'),
+            onTap: () async {
+            // ログアウト処理
+            // 内部で保持しているログイン情報等が初期化される
+            await FirebaseAuth.instance.signOut();
+            // ログイン画面に遷移＋チャット画面を破棄
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) {
+                return const LoginPage();
+              }),
+            );
+          },
+          ),
+        ]),
+      )
+    );
   }
 }
