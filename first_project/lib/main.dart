@@ -1,9 +1,12 @@
+// Material Components widgetsを利用。
 import 'package:flutter/material.dart';
-import 'package:first_project/loginpage.dart';
-
+// 他ファイルのプログラムを利用。
+import 'package:first_project/view/login_page.dart';
 // Firebaseと連携させるため以下追加。
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+// 状態管理を追加。
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Firebaseと連携されるたmain()を以下の通り修正。
 void main() async {
@@ -11,7 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const FirstProject());
+  // 状態管理(hooks_riverpod)を利用するために修正。
+  runApp(const ProviderScope(child: FirstProject()));
 }
 
 class FirstProject extends StatelessWidget {
@@ -29,7 +33,7 @@ class FirstProject extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // LoginPageを表示する。
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }
